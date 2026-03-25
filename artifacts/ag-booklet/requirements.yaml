@@ -1,0 +1,11 @@
+packages:
+  "date-fns": "For formatting dates cleanly"
+  "react-hook-form": "For robust form state management in admin panel"
+  "clsx": "For conditional class merging"
+  "tailwind-merge": "For reliable tailwind class merging"
+
+images: []
+
+notes:
+  - "Admin panel expects token-based authentication via localStorage 'admin_token'"
+  - "Admin APIs are under /api/admin/*"

@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/admin/
+
+# Crawl-delay for Yandex
+User-agent: Yandex
+Allow: /
+Crawl-delay: 1
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/admin/
+
+# Sitemaps
+Sitemap: https://razrabotka-agr.ru/api/public/sitemap.xml
+Sitemap: https://razrabotka-agr.ru/sitemap.xml

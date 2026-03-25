@@ -1,0 +1,29 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="180" y2="180" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1a3a7a"/>
+      <stop offset="100%" stop-color="#0a1a45"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square background -->
+  <rect width="180" height="180" rx="36" fill="url(#bg)"/>
+  <!-- Accent top bar -->
+  <rect x="0" y="0" width="180" height="7" rx="3" fill="#0088FF" opacity="0.8"/>
+  <!-- Building silhouette -->
+  <rect x="54" y="72" width="72" height="72" rx="3" fill="white" opacity="0.12"/>
+  <!-- Center door -->
+  <rect x="79" y="112" width="22" height="32" rx="2" fill="white" opacity="0.18"/>
+  <!-- Windows row 1 -->
+  <rect x="62" y="80" width="14" height="12" rx="2" fill="white" opacity="0.35"/>
+  <rect x="83" y="80" width="14" height="12" rx="2" fill="white" opacity="0.35"/>
+  <rect x="104" y="80" width="14" height="12" rx="2" fill="white" opacity="0.35"/>
+  <!-- Windows row 2 -->
+  <rect x="62" y="98" width="14" height="12" rx="2" fill="white" opacity="0.35"/>
+  <rect x="104" y="98" width="14" height="12" rx="2" fill="white" opacity="0.35"/>
+  <!-- Roof triangle -->
+  <polygon points="90,34 44,72 136,72" fill="#0088FF" opacity="0.9"/>
+  <!-- Chimney -->
+  <rect x="100" y="46" width="10" height="22" rx="2" fill="#0066CC" opacity="0.9"/>
+  <!-- Text "АГ" -->
+  <text x="90" y="158" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="white" text-anchor="middle" opacity="0.85" letter-spacing="2">АГ</text>
+</svg>

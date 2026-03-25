@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "dGyW9sgKM6Jb1c7Z2Q6MD"
+uri = "file://ag-booklet-site.tar.gz"
+type = "unspecified"
+title = "МосАГРПроект — сайт (архив)"

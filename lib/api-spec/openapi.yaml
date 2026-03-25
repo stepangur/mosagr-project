@@ -1,0 +1,631 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: API для сайта разработки буклета АГР по требованиям Москомархитектуры
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: orders
+    description: Order management
+  - name: contacts
+    description: Contact form submissions
+  - name: admin
+    description: Admin panel operations
+  - name: admin-news
+    description: Admin news management
+  - name: admin-templates
+    description: Admin templates management
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /orders:
+    get:
+      operationId: listOrders
+      tags: [orders]
+      summary: List all orders
+      responses:
+        "200":
+          description: List of orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+    post:
+      operationId: createOrder
+      tags: [orders]
+      summary: Create a new order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOrderRequest"
+      responses:
+        "201":
+          description: Order created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+
+  /contacts:
+    post:
+      operationId: submitContact
+      tags: [contacts]
+      summary: Submit a contact form
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactRequest"
+      responses:
+        "201":
+          description: Contact submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactResponse"
+
+  /admin/login:
+    post:
+      operationId: adminLogin
+      tags: [admin]
+      summary: Admin login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminLoginRequest"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminLoginResponse"
+        "401":
+          description: Unauthorized
+
+  /admin/logout:
+    post:
+      operationId: adminLogout
+      tags: [admin]
+      summary: Admin logout
+      responses:
+        "200":
+          description: Logged out
+
+  /admin/me:
+    get:
+      operationId: adminMe
+      tags: [admin]
+      summary: Get current admin session
+      responses:
+        "200":
+          description: Authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminLoginResponse"
+        "401":
+          description: Not authenticated
+
+  /admin/orders:
+    get:
+      operationId: adminListOrders
+      tags: [admin]
+      summary: List all orders (admin)
+      responses:
+        "200":
+          description: List of orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+
+  /admin/orders/{id}:
+    put:
+      operationId: adminUpdateOrder
+      tags: [admin]
+      summary: Update order status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateOrderRequest"
+      responses:
+        "200":
+          description: Order updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+    delete:
+      operationId: adminDeleteOrder
+      tags: [admin]
+      summary: Delete order
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+
+  /admin/contacts:
+    get:
+      operationId: adminListContacts
+      tags: [admin]
+      summary: List all contacts (admin)
+      responses:
+        "200":
+          description: List of contacts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Contact"
+
+  /admin/contacts/{id}:
+    delete:
+      operationId: adminDeleteContact
+      tags: [admin]
+      summary: Delete contact
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+
+  /admin/news:
+    get:
+      operationId: adminListNews
+      tags: [admin-news]
+      summary: List all news articles
+      responses:
+        "200":
+          description: List of articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NewsArticle"
+    post:
+      operationId: adminCreateNews
+      tags: [admin-news]
+      summary: Create news article
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNewsRequest"
+      responses:
+        "201":
+          description: Article created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsArticle"
+
+  /admin/news/{id}:
+    get:
+      operationId: adminGetNews
+      tags: [admin-news]
+      summary: Get news article by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Article
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsArticle"
+    put:
+      operationId: adminUpdateNews
+      tags: [admin-news]
+      summary: Update news article
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNewsRequest"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsArticle"
+    delete:
+      operationId: adminDeleteNews
+      tags: [admin-news]
+      summary: Delete news article
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+
+  /admin/templates:
+    get:
+      operationId: adminListTemplates
+      tags: [admin-templates]
+      summary: List all templates
+      responses:
+        "200":
+          description: List of templates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Template"
+    post:
+      operationId: adminCreateTemplate
+      tags: [admin-templates]
+      summary: Create template
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTemplateRequest"
+      responses:
+        "201":
+          description: Template created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Template"
+
+  /admin/templates/{id}:
+    put:
+      operationId: adminUpdateTemplate
+      tags: [admin-templates]
+      summary: Update template
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTemplateRequest"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Template"
+    delete:
+      operationId: adminDeleteTemplate
+      tags: [admin-templates]
+      summary: Delete template
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+
+  /public/news:
+    get:
+      operationId: publicListNews
+      tags: [admin-news]
+      summary: List published news (public)
+      responses:
+        "200":
+          description: Published articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NewsArticle"
+
+  /public/news/{id}:
+    get:
+      operationId: publicGetNews
+      tags: [admin-news]
+      summary: Get published news article (public)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Article
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsArticle"
+
+  /public/templates:
+    get:
+      operationId: publicListTemplates
+      tags: [admin-templates]
+      summary: List published templates (public)
+      responses:
+        "200":
+          description: Published templates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Template"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required: [status]
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        serviceType:
+          type: string
+        status:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, name, email, phone, address, serviceType, status, createdAt]
+
+    CreateOrderRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        serviceType:
+          type: string
+        notes:
+          type: string
+      required: [name, email, phone, address, serviceType]
+
+    UpdateOrderRequest:
+      type: object
+      properties:
+        status:
+          type: string
+        notes:
+          type: string
+      required: [status]
+
+    Contact:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        message:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, name, email, message, createdAt]
+
+    ContactRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        message:
+          type: string
+      required: [name, email, message]
+
+    ContactResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        message:
+          type: string
+      required: [id, message]
+
+    AdminLoginRequest:
+      type: object
+      properties:
+        password:
+          type: string
+      required: [password]
+
+    AdminLoginResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+        token:
+          type: string
+      required: [ok, token]
+
+    NewsArticle:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        excerpt:
+          type: string
+        content:
+          type: string
+        tag:
+          type: string
+        tagColor:
+          type: string
+        image:
+          type: string
+        readTime:
+          type: string
+        published:
+          type: boolean
+        publishedAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, title, excerpt, content, tag, tagColor, readTime, published, createdAt]
+
+    CreateNewsRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        excerpt:
+          type: string
+        content:
+          type: string
+        tag:
+          type: string
+        tagColor:
+          type: string
+        image:
+          type: string
+        readTime:
+          type: string
+        published:
+          type: boolean
+      required: [title, excerpt, content, tag, tagColor, readTime, published]
+
+    Template:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        category:
+          type: string
+        type:
+          type: string
+        tag:
+          type: string
+        tagColor:
+          type: string
+        description:
+          type: string
+        free:
+          type: boolean
+        image:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, title, category, type, tag, tagColor, description, free, createdAt]
+
+    CreateTemplateRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        category:
+          type: string
+        type:
+          type: string
+        tag:
+          type: string
+        tagColor:
+          type: string
+        description:
+          type: string
+        free:
+          type: boolean
+        image:
+          type: string
+      required: [title, category, type, tag, tagColor, description, free]
